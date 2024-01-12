@@ -6,8 +6,8 @@ const View = () => {
     const [record,setRecord] = useState([]);
     const [searchname,setSearchName] = useState("");
     const [sort,setSort] = useState("");
-    const [status,setStatus] = useState("");
-
+    const [status,setStatus] = useState(""); 
+    const [filterdata,setfilterData] = useState([]);
 
     useEffect(()=>{
         let all = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : [] 
@@ -66,7 +66,7 @@ const View = () => {
             original = original.filter((curItem)=>{
                 return curItem.status === status
             })
-            setRecord(original)
+            setfilterData(original)
         }
     },[status])
 
@@ -112,23 +112,44 @@ const View = () => {
                     </tr>
                 </thead>
                 <tbody>
+
+                    
                     {
-                        record.map((val)=>{
-                            return (
-                                <tr key={val.userid}>
-                                    <td>{val.userid}</td>
-                                    <td>{val.name}</td>
-                                    <td>{val.phone}</td>
-                                    <td>{val.status}</td>
-                                    <td>
-                                        <button onClick={ () => deleteData(val.userid) }>Delete</button> ||
-                                        <button>
-                                            <Link to={`/editrecord/${val.userid}`}>Edit</Link>
-                                        </button>
-                                    </td>
-                                </tr>
-                            )
-                        })
+                        filterdata.length!=0 ? (
+                            filterdata.map((val)=>{
+                                return (
+                                    <tr key={val.userid}>
+                                        <td>{val.userid}</td>
+                                        <td>{val.name}</td>
+                                        <td>{val.phone}</td>
+                                        <td>{val.status}</td>
+                                        <td>
+                                            <button onClick={ () => deleteData(val.userid) }>Delete</button> ||
+                                            <button>
+                                                <Link to={`/editrecord/${val.userid}`}>Edit</Link>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        ) : (
+                            record.map((val)=>{
+                                return (
+                                    <tr key={val.userid}>
+                                        <td>{val.userid}</td>
+                                        <td>{val.name}</td>
+                                        <td>{val.phone}</td>
+                                        <td>{val.status}</td>
+                                        <td>
+                                            <button onClick={ () => deleteData(val.userid) }>Delete</button> ||
+                                            <button>
+                                                <Link to={`/editrecord/${val.userid}`}>Edit</Link>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        )
                     }
                 </tbody>
             </table>
