@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, json } from 'react-router-dom'
 
+
 const View = () => {
 
     const [record,setRecord] = useState([]);
@@ -12,7 +13,7 @@ const View = () => {
     useEffect(()=>{
         let all = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : [] 
         setRecord(all);
-    },[])
+    },[]) 
 
     //search functionality
     useEffect(()=>{
@@ -21,6 +22,9 @@ const View = () => {
                 return val.name.toLowerCase().includes(searchname.toLowerCase());
             })
             setRecord(searchData)
+        }else{
+            let all = JSON.parse(localStorage.getItem('user')) ? JSON.parse(localStorage.getItem('user')) : [] 
+            setRecord(all);
         }
     },[searchname])
 
@@ -45,7 +49,6 @@ const View = () => {
         let result = [...record];
         if(sort != ""){
             if (sort === "descending") {
-                console.log("done desending");
                 result = [...record].sort((a, b) => {
                   return b.name.localeCompare(a.name);
                 });
@@ -112,8 +115,6 @@ const View = () => {
                     </tr>
                 </thead>
                 <tbody>
-
-                    
                     {
                         filterdata.length!=0 ? (
                             filterdata.map((val)=>{
